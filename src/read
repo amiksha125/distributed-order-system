@@ -1,0 +1,93 @@
+Product → Inventory → Order → Order Items → Transaction Logic
+
+example transaction : Place Order
+                         ↓
+                      Create order
+                         ↓
+                      Add order items
+                         ↓
+                      Reduce inventory
+
+                      if stock is insufficient:
+
+                         ROLLBACK
+
+
+DAO = Data Access Object
+
+The job of DAO is ONLY database communication.
+
+DAO should not contain business logic.
+
+Think of it like this:
+
+Controller / Main
+        ↓
+Service Layer (business logic, transactions)
+        ↓
+DAO (database operations only)
+        ↓
+Database
+
+Example responsibilities:
+
+DAO should do
+
+✔ Insert
+✔ Update
+✔ Delete
+✔ Select
+
+Why separate DAO and Service layer?
+DAO isolates database logic while Service handles business logic and transactions.
+This improves maintainability, testing, and separation of concerns.
+
+
+never insert duplicate inventory rows.
+They update stock atomically.
+
+
+
+
+Meaning:
+
+If product does not exist → INSERT
+
+If product exists → UPDATE quantity
+
+users
+   |
+   | user_id
+   ↓
+orders
+   |
+   | order_id
+   ↓
+order_items
+   |
+   | product_id
+   ↓
+products
+   |
+   ↓
+inventory
+
+
+
+Main.java
+   ↓
+UserDAO → users table
+
+ProductDAO → products table
+
+InventoryDAO → inventory table
+
+OrderService
+      ↓
+   OrderDAO → orders table
+      ↓
+   order_items table
+      ↓
+   update inventory
+
+Model → DAO → Service → Main
